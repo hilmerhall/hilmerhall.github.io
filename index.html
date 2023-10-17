@@ -1,7 +1,154 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Ensure the canvas is behind other content */
+            background-color: black;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        header h1 {
+            font-size: 36px;
+            margin: 0;
+        }
+        nav {
+            background-color: #444;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav li {
+            margin: 10px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .portfolio-item {
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .portfolio-item img {
+            max-width: 100%;
+            height: auto;
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
 <body>
-<h1> Portfolio site coming soon!</h1>
-<p1>Github to the rescue</p1>
+    <header>
+        <h1>Your Name</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <section id="about" class="portfolio-item">
+            <h2>About Me</h2>
+            <p>Your introduction and bio go here.</p>
+        </section>
+        <section id="portfolio" class="portfolio-item">
+            <h2>Portfolio</h2>
+            <div>
+                <img src="project1.jpg" alt="Project 1">
+                <p>Description of Project 1</p>
+            </div>
+            <div>
+                <img src="project2.jpg" alt="Project 2">
+                <p>Description of Project 2</p>
+            </div>
+            <!-- Add more projects as needed -->
+        </section>
+        <section id="contact" class="portfolio-item">
+            <h2>Contact</h2>
+            <p>Contact information and form go here.</p>
+        </section>
+    </div>
+    <canvas id="tesla-coil"></canvas>
+    <script>
+        const canvas = document.getElementById("tesla-coil");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const arcs = [];
+
+        function createArc(x, y) {
+            arcs.push({
+                x,
+                y,
+                age: 0,
+                maxLength: Math.random() * 60 + 10,
+                color: `rgb(${Math.random() * 255}, ${Math.random() * 255}, 255)`,
+            });
+        }
+
+        function drawArc(arc) {
+            ctx.beginPath();
+            ctx.moveTo(arc.x, arc.y);
+            ctx.lineTo(arc.x + Math.random() * 120 - 60, arc.y + Math.random() * 120 - 60);
+            ctx.strokeStyle = arc.color;
+            ctx.stroke();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = arcs.length - 1; i >= 0; i--) {
+                const arc = arcs[i];
+                drawArc(arc);
+                arc.age++;
+
+                if (arc.age > arc.maxLength) {
+                    arcs.splice(i, 1);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        canvas.addEventListener("mousedown", (event) => {
+            createArc(event.clientX, event.clientY);
+        });
+
+        animate();
+    </script>
 </body>
 </html>
