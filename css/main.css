@@ -1,0 +1,86 @@
+
+@font-face {
+    font-family: 'ephesis';
+    src: url('../img/ephesis_sub.woff2') format('woff2'),
+         url('../img/ephesis_sub.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'dm_sans';
+    src: url('../img/dm_sans.woff2') format('woff2'),
+         url('../img/dm_sans.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+body {
+    font-family: 'dm_sans', Arial, sans-serif;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Ensure the canvas is behind other content */
+    background-color: rgb(0, 0, 0);
+}
+header {
+    font-weight: bold;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+header h1 {
+    font-family: 'ephesis' , Arial, sans-serif;
+    font-weight: normal;
+    font-size: 42px;
+    margin: 0;
+}
+h2 {
+    text-align: center;
+    /*width: 50%;*/
+}
+nav {
+    background-color: #444;
+}
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+nav li {
+    margin: 10px;
+}
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.portfolio-item {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.portfolio-item img {
+    max-width: 100%;
+    height: auto;
+    
+}
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 24px;
+    }
+
+}
