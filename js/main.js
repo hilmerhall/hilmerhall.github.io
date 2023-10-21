@@ -71,6 +71,7 @@ function colorize(){
         document.getElementsByClassName('navLink')[i].style.color = isColorDark( selectedScheme.colors[1] ) === 'dark' ? 'white' : 'black';
         createSVG( sectSearch[i] ); 
     } 
+    drawRect();
    
     // Nav links
     
@@ -111,40 +112,100 @@ function createSVG( elem ){
 
     // Define the points for the rectangle
     // top-left corner
-    const x1 = 0;
+    const x1 = 1;
     const y1 = 4;
     // top-right
     const x2 = Math.round(svg.getAttribute('width') -20);
     const y2 = 4;
     // bottom-right
     const x3 = svg.getAttribute('width')-4;
-    const y3 = svg.getAttribute('height')-6;
+    const y3 = svg.getAttribute('height')-5;
     // bottom-left
-    const x4 = 0; // X-coordinate of the bottom-left corner
-    const y4 = svg.getAttribute('height')-6; // Y-coordinate of the bottom-left corner
+    const x4 = 1; // X-coordinate of the bottom-left corner
+    const y4 = svg.getAttribute('height')-5; // Y-coordinate of the bottom-left corner
 
     const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     polygon.setAttribute('points', `${x1},${y1} ${x2},${y2} ${x3},${y3} ${x4},${y4}`);
     polygon.setAttribute('fill', selectedScheme.colors[2]);
     //polygon.setAttribute('fill-opacity', 0.8);
     polygon.setAttribute('stroke', selectedScheme.colors[0]);
-    polygon.setAttribute('stroke-width', '0.5px');
+    polygon.setAttribute('stroke-width', '1px');
 
     svg.appendChild(polygon);
-
-    // Append the SVG element to the container
-    const svgData = new XMLSerializer().serializeToString(svg);
-    const svgDataUri = 'data:image/svg+xml,' + encodeURIComponent(svgData);
     
     // Set the data URI as a background image for the container
-    elem.style.backgroundImage = `url("${svgDataUri}")`;
+    elem.style.backgroundImage = svgEncode( svg );
     elem.style.backgroundRepeat = 'no-repeat';
     elem.style.backgroundSize = 'auto';
 
     elem.style.color = isColorDark( selectedScheme.colors[2] ) === 'dark' ? 'white' : 'black';
 
     // shadow offset - experimaent with depth
-    let depth = 4;//Math.floor( Math.random() * 6) + 3;
+    let depth = 5;//Math.floor( Math.random() * 6) + 3;
     elem.style.filter = "drop-shadow(" + depth + "px " + depth + "px 2px rgba(0, 0, 0, 0.25))";
-
 }
+function svgEncode( svg ){
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const svgDataUri = 'data:image/svg+xml,' + encodeURIComponent(svgData);
+
+    return `url("${svgDataUri}")`;
+};
+// background Anim Sequence
+
+function drawRect(){
+    const backDrop  = document.getElementById("backDrop");
+    const tri1 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    const tri2 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    const tri3 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    const tri4 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    const masterSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+    masterSvg.appendChild(tri1);
+    masterSvg.appendChild(tri2);
+    masterSvg.appendChild(tri3);
+    masterSvg.appendChild(tri4);
+
+    tri1.setAttribute('fill', selectedScheme.colors[1]);
+    tri2.setAttribute('fill', selectedScheme.colors[2]);
+    tri3.setAttribute('fill', selectedScheme.colors[3]);
+    tri4.setAttribute('fill', selectedScheme.colors[4]);
+
+    tri1.setAttribute('fill-opacity', 0.2);
+    tri2.setAttribute('fill-opacity', 0.2);
+    tri3.setAttribute('fill-opacity', 0.2);
+    tri4.setAttribute('fill-opacity', 0.2);
+
+
+
+    var centerPt = [backDrop.clientWidth /2, backDrop.clientHeight /2];
+    const boxW = backDrop.clientWidth;
+    const boxH = backDrop.clientHeight;
+
+    tri1.setAttribute('points' , `0,0 ${centerPt[0]},${centerPt[1]} ${boxW},0`);
+    tri2.setAttribute('points' , `${boxW},0 ${centerPt[0]},${centerPt[1]} ${boxW},${boxH}`);
+    tri3.setAttribute('points' , `${boxW},${boxH} ${centerPt[0]},${centerPt[1]} 0,${boxH}`);
+    tri4.setAttribute('points' , `0,${boxH} ${centerPt[0]},${centerPt[1]} 0,0`);
+
+    backDrop.style.backgroundImage = svgEncode( masterSvg );
+    console.log('points' , `0,0 ${centerPt[0]},${centerPt[1]} ${boxW},${boxH}`);
+}
+
+
+const targetFPS = 30;
+const frameDuration = 1000 / targetFPS;
+let lastFrameTime = 0;
+
+function mainLoop(timestamp) {
+  if (timestamp - lastFrameTime >= frameDuration) {
+    // Your animation logic goes here
+    drawRect();
+    // Update last frame time
+    lastFrameTime = timestamp;
+  }
+
+  // Request the next frame
+  requestAnimationFrame(mainLoop);
+}
+
+// Start the animation loop
+//requestAnimationFrame(mainLoop);
