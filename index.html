@@ -11,6 +11,9 @@
     <!--  My CSS -->
     <link rel="stylesheet" href="css/main.css">
 
+    <!-- main JS-->
+    <script type="text/javascript" src="js/main.js"></script>  
+
 
     <title>Your Portfolio</title>
 
@@ -22,87 +25,53 @@
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
-    <header>
+    <header class="nameTitle">
         <h1>Hilmer Anders Eben Hall</h1>
     </header>
-    <nav>
+    <nav  class="navBar">
         <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#portfolio">Portfolio</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a class='navLink' href="#about">About</a></li>
+            <li><a class='navLink'href="#portfolio">Portfolio</a></li>
+            <li><a class='navLink'href="#contact">Contact</a></li>
         </ul>
     </nav>
+    <div class="scheme"><p>Theme Name</p></div>
     <div class="container">
-        <section id="about" class="portfolio-item">
-            <h2>About Me</h2>
-            <p>Your introduction and bio go here.</p>
+        <section id="about" class="sect-item">
+            <div class="secTitle">
+                <h2>About Me</h2>
+            </div>
+            <div class="spacer"></div>
+            <p style="text-indent: 30px;">I've had many job titles over the years.  Designer, programmer, animator etc.  I think the one I liked the most was Creative Engineer. Need to code and animate a web banner? Want a green screened hamster running in a 3D modeled hamster ball?  Got some new tech that you want to setup as a display at a nascar race? How about a 3D print of some monument in Norway? The enjoyment of mixing creative and tech is a passion of mine. From concept to production, from consulting to producing.  If you have a idea you need ealized, I'm here to help.</p>
         </section>
-        <section id="portfolio" class="portfolio-item">
-            <h2>Portfolio</h2>
-            <div>
+        <section id="portfolio" class="sect-item">
+            <div class="secTitle">
+                <h2>Portfolio</h2>
+            </div>
+            <div class="spacer"></div>
+            <div class="spacer"></div>
+            <div class="portfolio-item">
                 <img src="project1.jpg" alt="Project 1">
                 <p>Description of Project 1</p>
             </div>
-            <div>
+            <div class="portfolio-item">
                 <img src="project2.jpg" alt="Project 2">
                 <p>Description of Project 2</p>
             </div>
             <!-- Add more projects as needed -->
         </section>
-        <section id="contact" class="portfolio-item">
-            <h2>Contact</h2>
-            <p>Contact information and form go here.</p>
+        <section id="contact" class="sect-item">
+            <div class="secTitle">
+                <h2>Contact</h2>
+            </div>
+            <div class="spacer"></div>
+            <p><a href="mailto:eben@hilmerhall.com" target="_blank">eben@hilmerhall.com</a></p>
         </section>
     </div>
-    <!-- <canvas id="tesla-coil"></canvas>
+    <!-- <div id="color-schemes-container"></div> -->
     <script>
-        const canvas = document.getElementById("tesla-coil");
-        const ctx = canvas.getContext("2d");
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const arcs = [];
-
-        function createArc(x, y) {
-            arcs.push({
-                x,
-                y,
-                age: 0,
-                maxLength: Math.random() * 60 + 10,
-                color: `rgb(${Math.random() * 255}, ${Math.random() * 255}, 255)`,
-            });
-        }
-
-        function drawArc(arc) {
-            ctx.beginPath();
-            ctx.moveTo(arc.x, arc.y);
-            ctx.lineTo(arc.x + Math.random() * 200 - 100, arc.y + Math.random() * 200 - 100);
-            ctx.strokeStyle = arc.color;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            for (let i = arcs.length - 1; i >= 0; i--) {
-                const arc = arcs[i];
-                drawArc(arc);
-                arc.age++;
-
-                if (arc.age > arc.maxLength) {
-                    arcs.splice(i, 1);
-                }
-            }
-            
-            requestAnimationFrame(animate);
-        }
-        canvas.addEventListener("mousedown", (event) => {
-            createArc(event.clientX, event.clientY);
-        });
-
-        animate();
-    </script> -->
+        loadColors();
+    </script>
+    <!-- <canvas id="tesla-coil"></canvas> -->
 </body>
 </html>
