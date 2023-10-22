@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
     <!-- Required meta tags -->
     <meta charset="utf-8">
 
@@ -16,7 +16,21 @@
 
 
     <title>Your Portfolio</title>
-
+    <script>
+        // Function to refresh the page
+        function refreshPage() {
+          location.reload();
+        }
+    
+        // Add a scroll event listener to the window
+        window.addEventListener('scroll', function() {
+          // Check if the user has scrolled to the top of the page
+          if (window.scrollY === 0) {
+            // Refresh the page when they try to scroll again
+            refreshPage();
+          }
+        });
+      </script>
 </head>
 
 <body>
@@ -42,7 +56,7 @@
                 <h2>About Me</h2>
             </div>
             <div class="spacer"></div>
-            <p style="text-indent: 30px;">I've had many job titles over the years.  Designer, programmer, animator etc.  I think the one I liked the most was Creative Engineer. Need to code and animate a web banner? Want a green screened hamster running in a 3D modeled hamster ball?  Got some new tech that you want to setup as a display at a nascar race? How about a 3D print of some monument in Norway? The enjoyment of mixing creative and tech is a passion of mine. From concept to production, from consulting to producing.  If you have a idea you need ealized, I'm here to help.</p>
+            <p style="text-indent: 30px;">I've had many job titles over the years.  Designer, programmer, animator etc.  I think the one I liked the most was Creative Engineer. Need to code and animate a web banner? Want a green screened hamster running in a 3D modeled hamster ball? How about a 3D print of some monument in Norway?  From concept to production, from consulting to producing.  If you have a idea you need realized, I'm here to help.</p>
         </section>
         <section id="portfolio" class="sect-item">
             <div class="secTitle">
