@@ -54,7 +54,7 @@ function isColorDark( hexColor) {
 function colorize(){
     const schemeDiv = document.getElementsByClassName("scheme")[0];
     //const themeName = themeDiv.querySelector("p");
-    schemeDiv.querySelector("p").textContent = "Theme : " + selectedScheme.name;
+    schemeDiv.querySelector("p").textContent = "Screen - " + screen.width + "  - Scale - " + screen.devicePixelRatio;//"Theme : " + selectedScheme.name;
     //console.log("theme", themeName.textContent);
 
     const tColor = isColorDark( selectedScheme.colors[0] ) === 'dark' ? 'white' : 'black';
