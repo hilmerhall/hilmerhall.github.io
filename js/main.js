@@ -51,6 +51,26 @@ function isColorDark( hexColor) {
 
     return luminance <= threshold ? 'dark' : 'light';
 }
+function lightenHexColor(hex, percent) {
+    // Remove the # symbol if it's present
+
+    hex = hex.replace(/^#/, '');
+  
+    // Parse the hex value into its RGB components
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+  
+    // Calculate the new RGB values by adding a percentage of white
+    const newR = Math.min(255, r + (255 - r) * (percent / 100));
+    const newG = Math.min(255, g + (255 - g) * (percent / 100));
+    const newB = Math.min(255, b + (255 - b) * (percent / 100));
+  
+    // Convert the new RGB values back to a hex color
+    const newHex = `#${Math.round(newR).toString(16).padStart(2, '0')}${Math.round(newG).toString(16).padStart(2, '0')}${Math.round(newB).toString(16).padStart(2, '0')}`;
+  
+    return newHex;
+  }
 function colorize(){
     const schemeDiv = document.getElementsByClassName("scheme")[0];
     //const themeName = themeDiv.querySelector("p");
@@ -63,15 +83,17 @@ function colorize(){
     document.getElementsByClassName('nameTitle')[0].style.color = tColor;
     document.getElementsByClassName('navBar')[0].style.backgroundColor = selectedScheme.colors[1];
 
-    // section titles
+    // -background-
+    createBackground();
 
+    // section titles
     const sectSearch = document.getElementsByClassName('secTitle');
     for( var i=0; i<sectSearch.length; i++){
         //sectSearch[i].style.color = tColor;
         document.getElementsByClassName('navLink')[i].style.color = isColorDark( selectedScheme.colors[1] ) === 'dark' ? 'white' : 'black';
         createSVG( sectSearch[i] ); 
     } 
-    drawRect();
+ 
    
     // Nav links
     
@@ -152,53 +174,121 @@ function svgEncode( svg ){
 };
 // background Anim Sequence
 
-function drawRect(){
-    const backDrop  = document.getElementById("backDrop");
-    const tri1 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    const tri2 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    const tri3 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    const tri4 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    const masterSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+var rect1Array = [];
+var rect2Array = [];
+const svg1 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+const svg2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+function createBackground(){
+    const backDrop  = document.getElementById("background");
 
-    masterSvg.appendChild(tri1);
-    masterSvg.appendChild(tri2);
-    masterSvg.appendChild(tri3);
-    masterSvg.appendChild(tri4);
+    const layer1 = document.getElementById("layer1");
+    layer1.style.filter = "drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.25)";
+    const boxCount = 15;
+    let distY = 0;
+    for( let i=0; distY < (backDrop.clientHeight +100); i++){
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        
+        let newWidth =  Math.floor( Math.random()*150 + 350 );
+        let newHeight = Math.floor(Math.random()*100 + 60);
+        
+        let newX = Math.floor(Math.random() * 80 - 40);
+        newX = newX < 0 ? newX : backDrop.clientWidth - newWidth + newX;
+        
+        let newY = distY + Math.floor(Math.random()*80 + 10);
+        
+        let color = lightenHexColor( selectedScheme.colors[Math.floor(Math.random()*selectedScheme.colors.length)] , 80);
+        rect.setAttribute("id","box"+i);
+        rect.setAttribute("x", newX)
+        rect.setAttribute("y", newY)
+        rect.setAttribute("width", newWidth);
+        rect.setAttribute("height", newHeight);
+        rect.setAttribute("fill", color);
+        rect.setAttribute('fill-opacity', 0.9);
+        rect.setAttribute('mySpeed', Math.floor(Math.random()*4) + 1);
+        svg1.appendChild(rect);
+        distY = newY + newHeight;
+        rect1Array[i] = rect;
+    }
 
-    tri1.setAttribute('fill', selectedScheme.colors[1]);
-    tri2.setAttribute('fill', selectedScheme.colors[2]);
-    tri3.setAttribute('fill', selectedScheme.colors[3]);
-    tri4.setAttribute('fill', selectedScheme.colors[4]);
+    layer1.style.backgroundImage = svgEncode( svg1 );
 
-    tri1.setAttribute('fill-opacity', 0.2);
-    tri2.setAttribute('fill-opacity', 0.2);
-    tri3.setAttribute('fill-opacity', 0.2);
-    tri4.setAttribute('fill-opacity', 0.2);
+    // secondlayer
+    const layer2 = document.getElementById("layer2");
+    layer2.style.filter = "drop-shadow(8px 8px 4px rgba(0, 0, 0, 0.25)";
+
+    distY = 0;
+    for( let i=0; distY < (backDrop.clientHeight +100); i++){
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        
+        let newWidth =  Math.floor( Math.random()*50 + 100 );
+        let newHeight = Math.floor( Math.random()*60 + 40 );
+        
+        let newX = Math.floor(Math.random() * 80 - 40);
+        newX = newX > 0 ? newX : backDrop.clientWidth - newWidth + newX;
+        
+        let newY = distY + Math.floor(Math.random()*80 + 10);
+        
+        let color = lightenHexColor( selectedScheme.colors[Math.floor(Math.random()*selectedScheme.colors.length)] , 90);
+        //rect.setAttribute("id","box"+i);
+        rect.setAttribute("x", newX)
+        rect.setAttribute("y", newY)
+        rect.setAttribute("width", newWidth);
+        rect.setAttribute("height", newHeight);
+        rect.setAttribute("fill", color);
+        rect.setAttribute('fill-opacity', 0.9);
+        rect.setAttribute('mySpeed', ((Math.random()*6) + 2));
+        svg2.appendChild(rect);
+        distY = newY + newHeight;
+        rect2Array[i] = rect;
+    }
+
+    layer2.style.backgroundImage = svgEncode( svg2);
+
+    // Start the animation loop
+    requestAnimationFrame(mainLoop);        
+};
+
+function animateRect(){
+    rect1Array.forEach((rect) => {
+        let newY = rect.getAttribute('y') - (rect.getAttribute('mySpeed')/12);
+        if(newY + rect.getAttribute('height') < -10){
+            newY = backDrop.clientHeight+100;
+        }
+        rect.setAttribute('y', newY);
+        layer1.style.backgroundImage = svgEncode( svg1 );
+    });
+
+    rect2Array.forEach((rect) => {
+        let newY = rect.getAttribute('y') - (rect.getAttribute('mySpeed')/5);
+
+        if(newY + rect.getAttribute('height') < -10){
+            newY = backDrop.clientHeight+100;
+        }
+        rect.setAttribute('y', newY);
+        layer2.style.backgroundImage = svgEncode( svg2 );
+    });
+
+};
 
 
-
-    var centerPt = [backDrop.clientWidth /2, backDrop.clientHeight /2];
-    const boxW = backDrop.clientWidth;
-    const boxH = backDrop.clientHeight;
-
-    tri1.setAttribute('points' , `0,0 ${centerPt[0]},${centerPt[1]} ${boxW},0`);
-    tri2.setAttribute('points' , `${boxW},0 ${centerPt[0]},${centerPt[1]} ${boxW},${boxH}`);
-    tri3.setAttribute('points' , `${boxW},${boxH} ${centerPt[0]},${centerPt[1]} 0,${boxH}`);
-    tri4.setAttribute('points' , `0,${boxH} ${centerPt[0]},${centerPt[1]} 0,0`);
-
-    backDrop.style.backgroundImage = svgEncode( masterSvg );
-    //console.log('points' , `0,0 ${centerPt[0]},${centerPt[1]} ${boxW},${boxH}`);
-}
-
-
-const targetFPS = 30;
+const targetFPS = 24;
 const frameDuration = 1000 / targetFPS;
 let lastFrameTime = 0;
-
+let startTime = 0;
 function mainLoop(timestamp) {
+
+  // Initialize the start time on the first frame
+  if (startTime === 0) {
+    startTime = timestamp;
+  }
+  if (timestamp - startTime >= 10000) {
+    // Stop the animation after 1 minute (60,000 milliseconds)
+    return;
+  }
+
   if (timestamp - lastFrameTime >= frameDuration) {
     // Your animation logic goes here
-    drawRect();
+    animateRect();
     // Update last frame time
     lastFrameTime = timestamp;
   }
@@ -207,5 +297,3 @@ function mainLoop(timestamp) {
   requestAnimationFrame(mainLoop);
 }
 
-// Start the animation loop
-//requestAnimationFrame(mainLoop);
