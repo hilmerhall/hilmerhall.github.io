@@ -18,8 +18,7 @@ body {
     font-weight: normal;
     margin: 0;
     padding: 0;
-    overflow: hidden;
-   
+    min-width: 600px;
 }
 canvas {
     position: absolute;
@@ -117,7 +116,6 @@ nav a {
     margin-left: 20px;
 }
 .portfolio-item img {
-
     max-width: 100%;
     height: auto;
     
@@ -139,6 +137,6 @@ nav a {
 }
 @media (min-width: 600px) {
     body {
-        min-width: 580px;
+        /* min-width: 580px; */
     }
 }

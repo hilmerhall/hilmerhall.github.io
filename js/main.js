@@ -187,7 +187,7 @@ function drawRect(){
     tri4.setAttribute('points' , `0,${boxH} ${centerPt[0]},${centerPt[1]} 0,0`);
 
     backDrop.style.backgroundImage = svgEncode( masterSvg );
-    console.log('points' , `0,0 ${centerPt[0]},${centerPt[1]} ${boxW},${boxH}`);
+    //console.log('points' , `0,0 ${centerPt[0]},${centerPt[1]} ${boxW},${boxH}`);
 }
 
 
