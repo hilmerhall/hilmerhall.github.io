@@ -140,7 +140,7 @@ function createSVG( elem ){
     const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     polygon.setAttribute('points', `${x1},${y1} ${x2},${y2} ${x3},${y3} ${x4},${y4}`);
     polygon.setAttribute('fill', selectedScheme.colors[2]);
-    polygon.setAttribute('fill-opacity', 0.6);
+    //polygon.setAttribute('fill-opacity', 0.6);
     polygon.setAttribute('stroke', selectedScheme.colors[0]);
     polygon.setAttribute('stroke-width', '1px');
 
@@ -180,7 +180,7 @@ function createBackground(){
     for( let i=0; distY < (backDrop.clientHeight +200); i++){
         let rect = {};
         rect.width =  Math.floor( Math.random()* 150 + (backDrop.clientWidth *.6) );
-        rect.height = Math.floor( Math.random()*100 + 60);
+        rect.height = Math.floor( Math.random()*150 + 80);
         
         rect.x = newX = Math.floor(Math.random() * (((backDrop.clientWidth) -  rect.width) + Math.floor(Math.random()*100 - 50) ));
         rect.y = distY + Math.floor(Math.random()*80 + 10);
