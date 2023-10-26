@@ -20,6 +20,7 @@ body {
     padding: 0;
     min-width: 600px;
     position: relative;
+    height: 100%;
 }
 .background {
     width: 100%;

@@ -1,5 +1,6 @@
 var colorSchemes;
 var selectedScheme;
+var backDrop;
 
 function loadColors(){
     fetch('js/colors.json')
@@ -8,6 +9,20 @@ function loadColors(){
         // Access and use the JSON data.
         colorSchemes = data.colorSchemes;
         selectedScheme = colorSchemes[Math.floor( Math.random() * (colorSchemes.length-1) )];
+/*      const colorSchemesContainer = document.getElementById('color-schemes-container');
+
+        colorSchemes.forEach((scheme, index) => {
+            const schemeDiv = document.createElement('div');
+            console.log('adding color - ', index + 1, ' - ', scheme.name);
+            schemeDiv.innerHTML = `
+                <p>Scheme ${index + 1}: ${scheme.name}</p>
+                <p>Colors: ${scheme.colors.join(', ')}</p>
+                <hr>
+            `;
+            colorSchemesContainer.appendChild(schemeDiv);
+        }); */
+
+    
         colorize();
     })
     .catch(error => {
@@ -95,21 +110,20 @@ function colorize(){
 function handleMediaQueryChange(mediaQuery) {
     if (mediaQuery.matches) {
        // console.log('Media query condition met. Perform action here.');
-
+       createBackground();
+       const sectSearch = document.getElementsByClassName('secTitle');
+       for( var i=0; i<sectSearch.length; i++){
+           createSVG( sectSearch[i] ); 
+       } 
     } else {
        // console.log('Media query condition not met. Revert or clean up here.');
     }
-    createBackground();
-    const sectSearch = document.getElementsByClassName('secTitle');
-    for( var i=0; i<sectSearch.length; i++){
-        createSVG( sectSearch[i] ); 
-    } 
 
 }
 
 // changes in the@ media query state
 const mediaQuery = window.matchMedia('(max-width: 768px)');
-//handleMediaQueryChange(mediaQuery);
+handleMediaQueryChange(mediaQuery);
 
 mediaQuery.addEventListener('change', function (event) {
     handleMediaQueryChange(event.target);
@@ -140,7 +154,7 @@ function createSVG( elem ){
     const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
     polygon.setAttribute('points', `${x1},${y1} ${x2},${y2} ${x3},${y3} ${x4},${y4}`);
     polygon.setAttribute('fill', selectedScheme.colors[2]);
-    polygon.setAttribute('fill-opacity', 0.6);
+    //polygon.setAttribute('fill-opacity', 0.6);
     polygon.setAttribute('stroke', selectedScheme.colors[0]);
     polygon.setAttribute('stroke-width', '1px');
 
@@ -166,102 +180,120 @@ function svgEncode( svg ){
 // background Anim Sequence
 
 var rect1Array = [];
-var canvas;
-var ctx;
-function createBackground(){
-    rect1Array = [];
-    canvas = document.getElementById("myCanvas");
-    canvas.width = document.getElementById("background").clientWidth;
-    canvas.height = document.getElementById("background").clientHeight;
-    ctx = canvas.getContext("2d"); 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+var rect2Array = [];
+const svg1 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+const svg2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
-    let distY = 0;
-    for( let i=0; distY < (backDrop.clientHeight +200); i++){
-        let rect = {};
-        rect.width =  Math.floor( Math.random()* 150 + (backDrop.clientWidth *.6) );
-        rect.height = Math.floor( Math.random()*100 + 60);
-        
-        rect.x = newX = Math.floor(Math.random() * (((backDrop.clientWidth) -  rect.width) + Math.floor(Math.random()*100 - 50) ));
-        rect.y = distY + Math.floor(Math.random()*80 + 10);
-        rect.color = lightenHexColor( selectedScheme.colors[Math.floor(Math.random()*selectedScheme.colors.length)] , 70);
-        rect.speedY = ('mySpeed', (Math.floor(Math.random()*4) + 1)*.2);
-        rect.shadowColor = "rgba(0, 0, 0, 0.2)";
-        rect.shadowBlur = 2;
-        rect.shadowOffsetX = 3;
-        rect.shadowOffsetY = 3;
-        ctx.fillStyle = rect.color;
-        distY = rect.y + rect.height;
-        rect1Array.push(rect);// = rect;
+function createBackground(){
+    
+    while (svg1.firstChild) {
+        svg.removeChild(svg.firstChild);
     }
+    while (svg2.firstChild) {
+        svg.removeChild(svg.firstChild);
+    }
+
+    const layer1 = document.getElementById("layer1");
+    layer1.style.filter = "drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.25)";
+    const boxCount = 15;
+    let distY = 0;
+    for( let i=0; distY < (backDrop.clientHeight +100); i++){
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        
+        let newWidth =  Math.floor( Math.random()* 150 + (backDrop.clientWidth *.6) );
+        let newHeight = Math.floor( Math.random()*100 + 60);
+        
+        let newX = Math.floor(Math.random() * (((backDrop.clientWidth) - newWidth) + Math.floor(Math.random()*100 - 50) ));
+        //newX = newX < 0 ? newX : backDrop.clientWidth - newWidth + newX;
+        
+        let newY = distY + Math.floor(Math.random()*80 + 10);
+        
+        let color = lightenHexColor( selectedScheme.colors[Math.floor(Math.random()*selectedScheme.colors.length)] , 70);
+        rect.setAttribute("id","box"+i);
+        rect.setAttribute("x", newX)
+        rect.setAttribute("y", newY)
+        rect.setAttribute("width", newWidth);
+        rect.setAttribute("height", newHeight);
+        rect.setAttribute("fill", color);
+       // rect.setAttribute('fill-opacity', 0.9);
+        rect.setAttribute('mySpeed', Math.floor(Math.random()*4) + 1);
+        svg1.appendChild(rect);
+        distY = newY + newHeight;
+        rect1Array[i] = rect;
+    }
+
+    layer1.style.backgroundImage = svgEncode( svg1 );
 
     // secondlayer
+    const layer2 = document.getElementById("layer2");
+    layer2.style.filter = "drop-shadow(8px 8px 4px rgba(0, 0, 0, 0.25)";
+
     distY = 0;
     for( let i=0; distY < (backDrop.clientHeight +100); i++){
-        let rect = {};
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         
-        rect.width =  Math.floor( Math.random()*100 + 100 );
-        rect.height = Math.floor( Math.random()*60 + 40 );
+        let newWidth =  Math.floor( Math.random()*50 + 100 );
+        let newHeight = Math.floor( Math.random()*60 + 40 );
         
-        rect.x = Math.floor(Math.random() * (backDrop.clientWidth - rect.width) - 40);
-        rect.y = distY + Math.floor(Math.random()*80 + 10);
-        rect.color = lightenHexColor( selectedScheme.colors[Math.floor(Math.random()*selectedScheme.colors.length)] , 90);
-        rect.speedY = ('mySpeed', (Math.floor(Math.random()*5) + 2) *.4);
-        rect.shadowColor = "rgba(0, 0, 0, 0.1)";
-        rect.shadowBlur = 4;
-        rect.shadowOffsetX = 6;
-        rect.shadowOffsetY = 6;
-        distY = rect.y + rect.height;
-        rect1Array.push(rect);// = rect;//rect2Array[i] = rect;
+        let newX = Math.floor(Math.random() * (backDrop.clientWidth - newWidth) - 40);
+        //newX = newX > 0 ? newX : backDrop.clientWidth - newWidth + newX;
+        
+        let newY = distY + Math.floor(Math.random()*80 + 10);
+        
+        let color = lightenHexColor( selectedScheme.colors[Math.floor(Math.random()*selectedScheme.colors.length)] , 90);
+        //rect.setAttribute("id","box"+i);
+        rect.setAttribute("x", newX)
+        rect.setAttribute("y", newY)
+        rect.setAttribute("width", newWidth);
+        rect.setAttribute("height", newHeight);
+        rect.setAttribute("fill", color);
+        //rect.setAttribute('fill-opacity', 0.9);
+        rect.setAttribute('mySpeed', ((Math.random()*6) + 2));
+        svg2.appendChild(rect);
+        distY = newY + newHeight;
+        rect2Array[i] = rect;
     }
-    drawRect();
-   requestAnimationFrame(mainLoop);        
-};
-function drawRect(){
-   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (const rect of rect1Array) {
-      ctx.fillStyle = rect.color;
-  
-      // Apply unique shadow settings for each rectangle
-      ctx.shadowColor = rect.shadowColor;
-      ctx.shadowBlur = rect.shadowBlur;
-      ctx.shadowOffsetX = rect.shadowOffsetX;
-      ctx.shadowOffsetY = rect.shadowOffsetY;
-  
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-  
-      // Reset shadow settings to avoid affecting other elements
-      ctx.shadowColor = "transparent";
-      ctx.shadowBlur = 0;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-    }
+    layer2.style.backgroundImage = svgEncode( svg2);
+
+    // Start the animation loop
+    requestAnimationFrame(mainLoop);        
 };
 
 function animateRect(){
-    for (const rect of rect1Array) {
-        rect.y -= rect.speedY;
-    
-        // Optional: Check for boundary and reverse direction
-        if ( (rect.y + rect.height) < 0 ) {
-          rect.y = canvas.height + 100;
+    rect1Array.forEach((rect) => {
+        let newY = rect.getAttribute('y') - (rect.getAttribute('mySpeed')/12);
+        if(newY + rect.getAttribute('height') < -10){
+            newY = backDrop.clientHeight+100;
         }
-    }
-    drawRect();
+        rect.setAttribute('y', newY);
+        layer1.style.backgroundImage = svgEncode( svg1 );
+    });
+
+    rect2Array.forEach((rect) => {
+        let newY = rect.getAttribute('y') - (rect.getAttribute('mySpeed')/5);
+
+        if(newY + rect.getAttribute('height') < -10){
+            newY = backDrop.clientHeight+100;
+        }
+        rect.setAttribute('y', newY);
+        layer2.style.backgroundImage = svgEncode( svg2 );
+    });
+
 };
 
 
-const targetFPS = 30;
+const targetFPS = 24;
 const frameDuration = 1000 / targetFPS;
-var lastFrameTime = 0;
-var startTime = 0;
+let lastFrameTime = 0;
+let startTime = 0;
 function mainLoop(timestamp) {
+
   // Initialize the start time on the first frame
   if (startTime === 0) {
     startTime = timestamp;
   }
-  if (timestamp - startTime >= 60000 *5) {
+  if (timestamp - startTime >= 60000) {
     // Stop the animation after 1 minute (60,000 milliseconds)
     return;
   }
@@ -274,6 +306,6 @@ function mainLoop(timestamp) {
   }
 
   // Request the next frame
- requestAnimationFrame(mainLoop);
+  requestAnimationFrame(mainLoop);
 }
 
