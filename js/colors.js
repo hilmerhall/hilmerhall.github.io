@@ -1,5 +1,5 @@
-{
-    "colorSchemes": [
+const colorObj = {
+"colorSchemes": [
         {
             "name": "Elegant Monochrome",
             "colors": ["#2C3E50", "#34495E", "#7F8C8D", "#BDC3C7", "#ECF0F1"]
@@ -105,4 +105,4 @@
             "colors": ["#000000", "#FFFFFF", "#FF0000", "#0000FF", "#FFFF00"]
         }
     ]
-}
+};

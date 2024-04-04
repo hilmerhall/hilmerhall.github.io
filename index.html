@@ -14,8 +14,14 @@
     <link rel="stylesheet" href="css/main.css">
 
     <!-- main JS-->
-    <script type="text/javascript" src="js/main.js"></script>  
-
+   
+    <script type="text/javascript" src="js/colors.js"></script>
+    <!--<script type="text/javascript" src="js/three.min.js"></script>-->
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/projectlist.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+ 
+   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>-->
 
     <title>Your Portfolio</title>
     <script>
@@ -32,6 +38,7 @@
             refreshPage();
           }
         });
+       // window.onload = initPage;
       </script>
 </head>
 
@@ -55,26 +62,40 @@
     <div class="container">
         <section id="about" class="sect-item">
             <div class="secTitle">
-                <h2>About Me</h2>
+                <h2>About Me: Creative Engineer</h2>
             </div>
             <div class="spacer"></div>
-            <p style="text-indent: 30px;">I've had many job titles over the years.  Designer, programmer, animator etc.  I think the one I liked the most was Principal Creative Engineer. Need to code and animate a web banner? Want a green screened hamster running in a 3D modeled hamster ball? How about a 3D print of some monument in Norway?  From concept to production, from consulting to producing.  If you have a idea you need realized, I'm here to help.</p>
+            <div class="spacer"></div>
+            <div class="intro">
+                <p>
+                    <strong> Designer | Programmer | Animator  | Post Productionist </strong>
+                </p>
+                <p>
+                    Throughout my career, I've worn various hats—each one contributing to my diverse skill set. But the title that resonates most with me? <strong>Principal Creative Engineer</strong>. It's not just a label; it's a compass guiding me through the realms of imagination and innovation.
+                </p>
+                <p>
+                    <strong>What can I do for you?</strong>
+                    <ul>
+                        <li>Need a web banner that combines code and captivates your audience? Consider it done.</li>
+                        <li>Imagining a green-screened hamster sprinting inside a 3D hamster ball? Let's bring that whimsy to life.</li>
+                        <li>Want a tangible 3D print of a Norwegian monument? Let's make it happen.</li>
+                    </ul>
+                </p>
+                <p>
+                    From concept to production, from consulting to execution—I thrive on turning ideas into reality. If you have a vision waiting to be realized, I'm here to help.
+                </p>
+                <p>
+                    <strong> Production  |  Conceptualization  |  Consultation </strong>
+                </p>
+                <p>
+                    Let's create something extraordinary together! 
+                </p>
+            </div>
         </section>
         <section id="portfolio" class="sect-item">
             <div class="secTitle">
                 <h2>Portfolio</h2>
             </div>
-            <div class="spacer"></div>
-            <div class="spacer"></div>
-            <div class="portfolio-item">
-                <img src="project1.jpg" alt="Project 1">
-                <p>Description of Project 1</p>
-            </div>
-            <div class="portfolio-item">
-                <img src="project2.jpg" alt="Project 2">
-                <p>Description of Project 2</p>
-            </div>
-            <!-- Add more projects as needed -->
         </section>
         <section id="contact" class="sect-item">
             <div class="secTitle">
@@ -85,15 +106,10 @@
         </section>
     </div>
     <div id="background" class="background">
-        <canvas id="myCanvas"></canvas>
+        <canvas id="myCanvas"></canvas> 
     </div>
 </body>
-    <!-- <div id="color-schemes-container"></div> -->
-    <script>
-        window.onload = function() {
-            loadColors();
-        };    
-    </script>
-    <!-- <canvas id="tesla-coil"></canvas> -->
-</body>
+<script>
+    window.onload = initColorScheme;
+  </script>
 </html>
